@@ -1,28 +1,28 @@
 <template>
   <div @contextmenu="containermenu($event)" @mousedown="containermousedown">
 <div class="align-center">
-  <el-breadcrumb separator="/">
-      <el-breadcrumb-item v-for="(item, index) in pidpaths" :key="index">
+  <breadcrumb separator="/">
+      <breadcrumb-item v-for="(item, index) in pidpaths" :key="index">
         <span v-if="index === pidpaths.length - 1">{{ item.name }}</span>
         <a v-else type="text" @click="clickPath(item)" style="color: #6a62f2">{{
           item.name
         }}</a>
-      </el-breadcrumb-item>
-    </el-breadcrumb>
+      </breadcrumb-item>
+    </breadcrumb>
 
-    <el-button v-if="Array.isArray(pidpaths) && pidpaths.length > 1" type="text" @click="pidback" style="margin-left: 12px; cursor: pointer;">返回上一层</el-button>
+    <button v-if="Array.isArray(pidpaths) && pidpaths.length > 1" type="text" @click="pidback" style="margin-left: 12px; cursor: pointer;">返回上一层</button>
 </div>
 
     <div style="margin-top: 20px">
-      <el-button type="primary" size="small" @click="upload">上传</el-button>
-      <el-button type="primary" size="small" @click="addDir">新建文件夹</el-button>
-      <el-button v-if="show_paste" size="small" type="primary" @click="pasteHere">粘贴到此</el-button>
-      <el-button type="primary" size="small" @click="getImageList()">刷新</el-button>
-      <el-button type="primary" size="small">同步到服务器</el-button>
-      <!-- <el-button type="primary"  size="small" >排序方式</el-button> -->
-      <!-- <el-button type="danger"  size="small"  @click="shear()">批量剪切</el-button>
-      <el-button type="danger"  size="small"  @click="delItems()">批量删除</el-button> -->
-      <!-- <el-button type="danger"  size="small"  @click="flatAll()">全部拉平</el-button> -->
+      <button type="primary" size="small" @click="upload">上传</button>
+      <button type="primary" size="small" @click="addDir">新建文件夹</button>
+      <button v-if="show_paste" size="small" type="primary" @click="pasteHere">粘贴到此</button>
+      <button type="primary" size="small" @click="getImageList()">刷新</button>
+      <button type="primary" size="small">同步到服务器</button>
+      <!-- <button type="primary"  size="small" >排序方式</button> -->
+      <!-- <button type="danger"  size="small"  @click="shear()">批量剪切</button>
+      <button type="danger"  size="small"  @click="delItems()">批量删除</button> -->
+      <!-- <button type="danger"  size="small"  @click="flatAll()">全部拉平</button> -->
     </div>
 
     <div class="image-container">
@@ -32,10 +32,10 @@
       }" @dblclick.stop="clickFoldItem(item)" @contextmenu="contextmenu($event, index)"
         @mousedown="mouseDown($event, index)">
         <!-- <div v-if="item.dir" class="image">
-          <i class="el-icon-folder"></i>
+          <i class="icon-folder"></i>
         </div> -->
         <div class="image">
-          <img v-if="item.dir" class="image-dir" src="../common/images/文件夹.png" alt="" />
+          <img v-if="item.dir" class="image-dir" src="../assets/文件夹.png" alt="" />
           <img v-else class="image-image" :src="item.url" alt="" />
         </div>
 
@@ -47,46 +47,45 @@
     </div>
     <!-- {{ dataForm.page }} / {{ dataForm.pagesize }} -->
     <div v-for="(item, index) in pidpaths" :key="index" style="display: flex; justify-content: center;">
-      <el-pagination v-if="index === pidpaths.length - 1" :current-page="item.page" :page-size="dataForm.pagesize"
+      <pagination v-if="index === pidpaths.length - 1" :current-page="item.page" :page-size="dataForm.pagesize"
         layout="total, prev, pager, next, sizes" :page-sizes="[10, 20, 30]" :total="listTotal"
-        @current-change="changePage" @size-change="handleSizeChange" style="margin: 0 auto;"></el-pagination>
+        @current-change="changePage" @size-change="handleSizeChange" style="margin: 0 auto;"></pagination>
     </div>
 
-    <el-dialog title="新建文件夹" :visible.sync="dirShow" append-to-body>
-      <el-form ref="dirFormRef" :model="dirForm" :rules="nameRules">
-        <el-form-item prop="name" label="文件夹名称">
-          <el-input v-model="dirForm.name"></el-input>
-        </el-form-item>
+    <hDialog title="新建文件夹" :visible.sync="dirShow" append-to-body>
+      <form ref="dirFormRef" :model="dirForm" :rules="nameRules">
+        <form-item prop="name" label="文件夹名称">
+          <input v-model="dirForm.name">
+        </form-item>
 
-      </el-form>
+      </form>
       <template slot="footer">
-        <el-button @click="dirShow = false">取消</el-button>
-        <el-button type="primary" @click="submitDir">提交</el-button>
+        <button @click="dirShow = false">取消</button>
+        <button type="primary" @click="submitDir">提交</button>
       </template>
-    </el-dialog>
+    </hDialog>
 
-    <el-dialog title="重命名" :visible.sync="renameShow" append-to-body>
-      <el-form ref="renameFormRef" :model="renameForm" :rules="nameRules">
-        <el-form-item prop="name" label="名称">
-          <el-input v-model="renameForm.name"></el-input>
-        </el-form-item>
-      </el-form>
+    <hDialog title="重命名" :visible.sync="renameShow" append-to-body>
+      <form ref="renameFormRef" :model="renameForm" :rules="nameRules">
+        <form-item prop="name" label="名称">
+          <input v-model="renameForm.name">
+        </form-item>
+      </form>
 
-      <template slot="footer">
-        <el-button @click="renameShow = false">取消</el-button>
-        <el-button type="primary" @click="submitRename">提交</el-button>
-      </template>
-    </el-dialog>
+        <button @click="renameShow = false">取消</button>
+        <button type="primary" @click="submitRename">提交</button>
+    </hDialog>
   </div>
 </template>
 
 <script>
 import utils from "../utils";
-import debounce from "lodash/debounce";
-import keydown_mixin from "../mixins/keydown.js"
+import hDialog from "./h-dialog/h-dialog.vue"
+import keydown_mixin from "../utils/keydown.js"
 export default {
   name: "file-manager",
   mixins: [keydown_mixin],
+    components: {hDialog},
   data () {
     return {
       dataForm: {
@@ -159,7 +158,7 @@ export default {
           const loading = this.$loading({
             lock: true,
             text: "上传中",
-            spinner: "el-icon-loading",
+            spinner: "icon-loading",
             background: "rgba(0, 0, 0, 0.2)",
           });
           // todo // 构想 // 上传将图片shift到列表中，一个一个加载上传进度
@@ -173,6 +172,7 @@ export default {
             const res = await this.$axios.post("/api/upload", formData, {
               hideloading: true,
             });
+            console.log(res)
           }
           //     const isLt100M = this.fileList.every(
           //   (file) => file.size / 1024 / 1024 < 100
@@ -317,6 +317,7 @@ export default {
         ...item,
         parentid: parentid,
       })));
+        console.log(res)
       this.shearList = [];
       this.getImageList();
     },
@@ -395,8 +396,9 @@ export default {
           }
           break
         case 'shift_click':
+            // eslint-disable-next-line no-case-declarations
           let selectIndexs = []
-          this.selectList.forEach((item, index) => {
+          this.selectList.forEach((item, ) => {
             const fIndex = this.list.findIndex(item1 => item1 === item)
             if (fIndex > -1) {
               selectIndexs.push(fIndex)
@@ -404,7 +406,9 @@ export default {
           })
           selectIndexs.sort()
 
+            // eslint-disable-next-line no-case-declarations
           const min = Math.min(...selectIndexs)
+            // eslint-disable-next-line no-case-declarations
           const tempSelectList = []
           if (click_index < min) {
             for (let i = click_index; i < min + 1; i++) {
@@ -533,7 +537,7 @@ export default {
           });
         };
       } else if (down_ev.button === 2) {
-
+console.log(down_ev)
       }
 
     },
@@ -627,27 +631,30 @@ export default {
       const { clientX, clientY } = ev
 
       if (fold_item.dir) {
-        utils.createRightMenu(clientX, clientY, [
+        this.$createRightMenu(clientX, clientY, [
           {
-            icon_class: "el-icon-upload",
+            icon_class: "icon-upload",
             text: "同步到服务器",
             click: (item) => {
               this.disband_fold(fold_item.id, fold_item.parentid || "");
+                console.log(item)
             },
           },
           {
-            icon_class: "el-icon-folder-opened",
+            icon_class: "icon-folder-opened",
             text: "打开",
             click: (item) => {
               this.clickFoldItem(fold_item);
+                console.log(item)
             },
           },
           {
-            icon_class: "el-icon-scissors",
+            icon_class: "icon-scissors",
             text: "剪切",
             click: (item) => {
               this.shearList = this.selectList
               this.$message.success("已剪切到粘贴板");
+                console.log(item)
             },
           },
           {
@@ -656,6 +663,7 @@ export default {
             click: (item) => {
               this.renameShow = true
               this.renameForm.name = fold_item.name
+                console.log(item)
             },
           },
           {
@@ -663,31 +671,34 @@ export default {
             text: "解散",
             click: (item) => {
               this.disband_fold(fold_item.id, fold_item.parentid || "");
+                console.log(item)
             },
           },
         ]);
       } else {
-        utils.createRightMenu(clientX, clientY, [
+        this.$createRightMenu(clientX, clientY, [
           {
-            icon_class: "el-icon-upload",
+            icon_class: "icon-upload",
             text: "同步到服务器",
             click: (item) => {
               this.disband_fold(fold_item.id, fold_item.parentid || "");
+                console.log(item)
             },
           },
           {
-            icon_class: "el-icon-download",
+            icon_class: "icon-download",
             text: "下载",
             click: (item) => {
               console.log(item);
             },
           },
           {
-            icon_class: "el-icon-scissors",
+            icon_class: "icon-scissors",
             text: "剪切",
             click: (item) => {
               this.shearList = this.selectList
               this.$message.success("已剪切到粘贴板");
+                console.log(item)
             },
           },
           {
@@ -696,21 +707,24 @@ export default {
             click: (item) => {
               this.renameShow = true
               this.renameForm.name = fold_item.name
+                console.log(item)
 
             },
           },
           {
-            icon_class: "el-icon-delete",
+            icon_class: "icon-delete",
             text: "删除",
             click: (item) => {
               this.delItems()
+                console.log(item)
             },
           },
           {
-            icon_class: "el-icon-view",
+            icon_class: "icon-view",
             text: "预览",
             click: (item) => {
               this.previewSelect()
+                console.log(item)
             },
           }
         ]);
@@ -770,24 +784,27 @@ export default {
 
       let rightMenuItems = [
         {
-          icon_class: "el-icon-upload2",
+          icon_class: "icon-upload2",
           text: "上传",
           click: (item) => {
             this.upload()
+              console.log(item)
           },
         },
         {
-          icon_class: "el-icon-folder-add",
+          icon_class: "icon-folder-add",
           text: "新建文件夹",
           click: (item) => {
             this.addDir()
+              console.log(item)
           },
         },
         {
-          icon_class: "el-icon-refresh",
+          icon_class: "icon-refresh",
           text: "刷新",
           click: (item) => {
             this.getImageList()
+              console.log(item)
           },
         },
 
@@ -798,10 +815,11 @@ export default {
           text: "粘贴",
           click: (item) => {
             this.pasteHere()
+              console.log(item)
           },
         },)
       }
-      utils.createRightMenu(ev.clientX, ev.clientY, rightMenuItems);
+        this.$createRightMenu(ev.clientX, ev.clientY, rightMenuItems);
     },
 
     containermousedown (ev) {

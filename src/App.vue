@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <fileManager />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import fileManager from './components/file-manager.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+      fileManager
   }
 }
 </script>

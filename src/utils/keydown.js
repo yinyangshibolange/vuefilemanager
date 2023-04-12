@@ -42,8 +42,8 @@ export default {
 // console.log(this.downkeys)
    if (this.downkeys.includes(17)) {
     if (this.downkeys.includes(67) && this.downkeys.includes(88)) {
-     const cIndex = thid.downkeys.findIndex(item => item === 67)
-     const xIndex = thid.downkeys.findIndex(item => item === 88)
+     const cIndex = this.downkeys.findIndex(item => item === 67)
+     const xIndex = this.downkeys.findIndex(item => item === 88)
      if (cIndex > xIndex) {
       // ctrl + c function
      } else {

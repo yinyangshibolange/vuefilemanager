@@ -61,7 +61,8 @@ myfn.upload = function (options, callback) {
  input.accept = accept
  input.type = "file"
  input.multiple = multiple
- input.onchange = function (res) {
+ input.onchange = function () {
+
   const tempFiles = []
   const failFiles = []
   for (let i = 0; i < input.files.length; i++) {
@@ -90,7 +91,7 @@ myfn.getQueryString = function (url, name) {
 
 let menu_container
 /**
- * 
+ *
  * @param {*} x 左x位置
  * @param {*} y 上y位置
  * @param {*} menu_items 菜单详情
@@ -148,7 +149,7 @@ myfn.createRightMenu = function (x, y, menu_items) {
    const { clientX, clientY } = ev
    const { top, bottom, left, right } = menu_container.getBoundingClientRect()
    if (left < clientX && right > clientX && top < clientY && bottom > clientY) {
-
+console.log(left)
    } else {
     document.body.removeChild(menu_container)
     menu_container = null
