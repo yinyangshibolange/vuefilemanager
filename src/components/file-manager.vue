@@ -174,25 +174,6 @@ export default {
             });
             console.log(res)
           }
-          //     const isLt100M = this.fileList.every(
-          //   (file) => file.size / 1024 / 1024 < 100
-          // );
-
-
-          // const formData = new FormData();
-          // //注意此处是item.raw，如果直接使用files，那么不会有数据传输到后端
-          // tempFiles.forEach((item) => {
-          //   formData.append("files", item.raw);
-          // });
-          // formData.append(
-          //   "parentid",
-          //   this.pidpaths[this.pidpaths.length - 1].parentid
-          // );
-          // const res = await this.$axios.post("/api/uploadbatch", formData, {
-          //   headers: {
-          //     "Content-Type": "multipart/form-data"
-          //   }
-          // })
           this.getImageList();
           loading.close();
         }
